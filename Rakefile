@@ -13,10 +13,16 @@ file "ios_build_config.rb" do
   open('ios_build_config.rb', 'w') do |config_file|
 
     config_file.puts <<__EOF__
+gembox = 'full-core'
+def add_gem(conf)
+  conf.gem :git => 'git://github.com/iij/mruby-pack.git'
+end
+
 MRuby::Build.new do |conf|
   toolchain :clang
 
-  conf.gembox 'default'
+  conf.gembox gembox
+  add_gem conf
 end
 
 SIM_SYSROOT="#{SIMSDKPATH}"
@@ -25,7 +31,8 @@ DEVICE_SYSROOT="#{IOSSDKPATH}"
 MRuby::CrossBuild.new('ios-simulator') do |conf|
   conf.bins = []
 
-  conf.gembox 'default'
+  conf.gembox gembox
+  add_gem conf
 
   conf.cc do |cc|
     cc.command = 'xcrun'
@@ -41,7 +48,8 @@ end
 MRuby::CrossBuild.new('ios-armv7') do |conf|
   conf.bins = []
 
-  conf.gembox 'default'
+  conf.gembox gembox
+  add_gem conf
 
   conf.cc do |cc|
     cc.command = 'xcrun'
@@ -57,7 +65,8 @@ end
 MRuby::CrossBuild.new('ios-armv7s') do |conf|
   conf.bins = []
 
-  conf.gembox 'default'
+  conf.gembox gembox
+  add_gem conf
   conf.cc do |cc|
     cc.command = 'xcrun'
     cc.flags = %W(-sdk iphoneos clang -arch armv7s -isysroot \#{DEVICE_SYSROOT} -g -O3 -Wall -Werror-implicit-function-declaration)
@@ -72,7 +81,8 @@ end
 MRuby::CrossBuild.new('ios-arm64') do |conf|
   conf.bins = []
 
-  conf.gembox 'default'
+  conf.gembox gembox
+  add_gem conf
   conf.cc do |cc|
     cc.command = 'xcrun'
     cc.flags = %W(-sdk iphoneos clang -arch arm64 -isysroot \#{DEVICE_SYSROOT} -g -O3 -Wall -Werror-implicit-function-declaration)
