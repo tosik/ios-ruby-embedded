@@ -14,6 +14,7 @@ file "ios_build_config.rb" do
 gembox = 'full-core'
 def add_gem(conf)
   conf.gem :git => 'git://github.com/iij/mruby-pack.git'
+  conf.gem :git => 'https://github.com/suzukaze/mruby-msgpack.git'
 end
 
 MRuby::Build.new do |conf|
